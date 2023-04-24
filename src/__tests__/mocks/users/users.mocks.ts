@@ -1,24 +1,24 @@
-import { TUserCreate, TUserWrongCreate } from '../interfaces'
+import { TUserCreate, TUserWrongCreate } from "../../../interfaces/user";
 
 const createUserAdmin: TUserCreate = {
-    name: 'Ugo',
-    email: 'ugo@kenzie.com.br',
-    password: '1234',
-    admin: true,
-    active: false,
-}
+  name: "Ugo",
+  email: "ugo@kenzie.com.br",
+  password: "1234",
+  admin: true,
+  active: false,
+};
 
 const createUserNotAdmin: TUserCreate = {
-    name: 'Fabio',
-    email: 'fabio@kenzie.com.br',
-    password: '1234',
-    admin: false,
-    active: true,
-}
+  name: "Fabio",
+  email: "fabio@kenzie.com.br",
+  password: "1234",
+  admin: false,
+  active: true,
+};
 
 const createUserWrongKeys: TUserWrongCreate = {
-    name: 1234,
-    email: 'joaoerrado',
-}
+  name: 1234,
+  email: "joaoerrado",
+};
 
-export { createUserAdmin, createUserNotAdmin, createUserWrongKeys }
+export { createUserAdmin, createUserNotAdmin, createUserWrongKeys };
