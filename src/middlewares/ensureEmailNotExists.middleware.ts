@@ -3,16 +3,16 @@ import { QueryResult } from "pg";
 import format from "pg-format";
 import { TUserResponse } from "../interfaces/user";
 import { client } from "../database";
+import { AppError } from "../error";
 
-const ensureEmailNotExists = async (
+const ensureEmailNotExistsMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  try {
-    const { email }: { email: string } = req.body;
-    const queryString: string = format(
-      `
+  const { email }: { email: string } = req.body;
+  const queryString: string = format(
+    `
         SELECT 
           * 
         FROM
@@ -20,22 +20,16 @@ const ensureEmailNotExists = async (
         WHERE
           email = (%L);
         `,
-      email
-    );
+    email
+  );
 
-    const queryResult: QueryResult = await client.query(queryString);
+  const queryResult: QueryResult = await client.query(queryString);
 
-    if (queryResult.rowCount > 0) {
-      throw new Error("E-mail already registered");
-    }
-
-    return next();
-  } catch (error: any) {
-    console.log(error);
-    return res.status(409).json({
-      message: error.message,
-    });
+  if (queryResult.rowCount > 0) {
+    throw new AppError("E-mail already registered", 409);
   }
+
+  return next();
 };
 
-export default ensureEmailNotExists;
+export default ensureEmailNotExistsMiddleware;

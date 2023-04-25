@@ -1,23 +1,22 @@
 import { Request, Response } from "express";
 import createUsersService from "../services/users/createUsers.service";
-import { TUserRequest, TUserResponse } from "../interfaces/user";
+import {
+  TUserRequest,
+  TUserResponse,
+  TUserUpdateRequest,
+} from "../interfaces/user";
 import listUsersService from "../services/users/listUsers.service";
 import retrieveUsersServices from "../services/users/retrieveUser.service";
+import updateUsersService from "../services/users/updateUsers.service";
 
 const createUsersController = async (
   req: Request,
   resp: Response
 ): Promise<Response> => {
-  try {
-    const payload: TUserRequest = req.body;
-    const newUser: TUserResponse = await createUsersService(payload);
+  const payload: TUserRequest = req.body;
+  const newUser: TUserResponse = await createUsersService(payload);
 
-    return resp.status(201).json(newUser);
-  } catch (error: any) {
-    return resp.status(400).json({
-      message: error.message,
-    });
-  }
+  return resp.status(201).json(newUser);
 };
 
 const listUsersController = async (
@@ -29,21 +28,30 @@ const listUsersController = async (
   return res.json(users);
 };
 
-const retrieveUsersControllers = async (
+const retrieveUsersController = async (
   req: Request,
-  resp: Response
+  res: Response
 ): Promise<Response> => {
-  try {
-    const userId: number = Number(req.params.id);
+  const user = await retrieveUsersServices(res.locals.user);
 
-    const user = await retrieveUsersServices(userId);
-
-    return resp.status(200).json(user);
-  } catch (error: any) {
-    return resp.status(400).json({
-      message: error.message,
-    });
-  }
+  return res.json(user);
 };
 
-export { createUsersController, listUsersController, retrieveUsersControllers };
+const updateUsersController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const userId: number = parseInt(req.params.id);
+  const userData: TUserUpdateRequest = req.body;
+
+  const updatedUser = await updateUsersService(userId, userData);
+
+  return res.json(updatedUser);
+};
+
+export {
+  createUsersController,
+  listUsersController,
+  retrieveUsersController,
+  updateUsersController,
+};

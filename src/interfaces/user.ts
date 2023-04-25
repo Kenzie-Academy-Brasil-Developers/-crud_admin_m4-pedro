@@ -1,15 +1,18 @@
-type TUser = {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  admin: boolean;
-  active: boolean;
-};
+import { z } from "zod";
+import {
+  updateUserSchema,
+  requestUserSchema,
+  responseUserSchema,
+  userSchema,
+} from "../schemas/users.schemas";
 
-type TUserRequest = Omit<TUser, "id">;
+type TUser = z.infer<typeof userSchema>;
 
-type TUserResponse = Omit<TUser, "password">;
+type TUserRequest = z.infer<typeof requestUserSchema>;
+
+type TUserUpdateRequest = z.infer<typeof updateUserSchema>;
+
+type TUserResponse = z.infer<typeof responseUserSchema>;
 
 type TUserCreate = Omit<TUser, "id"> & {
   password: string;
@@ -29,4 +32,5 @@ export {
   TUser,
   TUserRequest,
   TUserResponse,
+  TUserUpdateRequest,
 };

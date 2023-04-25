@@ -1,19 +1,9 @@
-import { format } from "path";
-import { TUser } from "../../interfaces/user";
-import { QueryResult } from "pg";
-import { client } from "../../database";
+import { TUser, TUserResponse } from "../../interfaces/user";
+import { responseUserSchema } from "../../schemas/users.schemas";
 
-const retrieveUsersServices = async (userId: number): Promise<TUser> => {
-  const id: number = userId;
-
-  const queryString: string = `
-    SELECT * FROM users
-    WHERE id = %L;
-    `;
-
-  const queryResult: QueryResult<TUser> = await client.query(queryString);
-
-  return queryResult.rows[0];
+const retrieveUsersService = async (user: TUser): Promise<TUserResponse> => {
+  const userResponse = responseUserSchema.parse(user);
+  return user;
 };
 
-export default retrieveUsersServices;
+export default retrieveUsersService;
