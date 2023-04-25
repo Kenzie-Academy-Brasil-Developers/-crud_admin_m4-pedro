@@ -14,8 +14,8 @@ const createUsersService = async (
 ): Promise<TUserResponse> => {
   const queryString: string = format(
     `
-    INSERTO INTO 
-       users(I%)
+    INSERT INTO 
+       users (%I)
     VALUES
        (%L)
     RETURNING 

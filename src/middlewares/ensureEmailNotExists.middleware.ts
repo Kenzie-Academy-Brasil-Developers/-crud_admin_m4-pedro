@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { QueryResult } from "pg";
 import format from "pg-format";
-import { TUserResponse } from "../interfaces/user";
 import { client } from "../database";
 import { AppError } from "../error";
 
