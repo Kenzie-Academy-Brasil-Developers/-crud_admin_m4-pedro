@@ -1,4 +1,6 @@
 import format from "pg-format";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import {
   TLoginRequest,
   TLoginResponse,
@@ -8,25 +10,22 @@ import { client } from "../../database";
 import { TUser } from "../../interfaces/user.interfaces";
 import { AppError } from "../../error";
 import * as bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 const createSessionService = async (
   payload: TLoginRequest
 ): Promise<TLoginResponse> => {
-  const email: string = payload.email;
-
   const queryString: string = format(
     `
     SELECT * FROM users
     WHERE email = %L;
     `,
-    email
+    payload.email
   );
 
   const queryResult: QueryResult<TUser> = await client.query(queryString);
 
   if (queryResult.rowCount === 0) {
-    throw new AppError("Wrong email/password");
+    throw new AppError("Wrong email/password", 401);
   }
 
   const user = queryResult.rows[0];
@@ -37,14 +36,14 @@ const createSessionService = async (
   );
 
   if (!comparePassword) {
-    throw new AppError("Wrong email/password");
+    throw new AppError("Wrong email/password", 401);
   }
 
   const token: string = jwt.sign(
     {
       admin: user.admin,
     },
-    "secret key",
+    String(process.env.SECRET_KEY!),
     {
       expiresIn: "1d",
       subject: user.id.toString(),

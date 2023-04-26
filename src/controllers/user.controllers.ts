@@ -23,7 +23,7 @@ const listUsersController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const users = listUsersService();
+  const users = await listUsersService();
 
   return res.json(users);
 };
