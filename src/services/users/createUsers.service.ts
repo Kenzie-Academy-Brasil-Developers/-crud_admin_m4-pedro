@@ -4,14 +4,17 @@ import {
   TUserCreate,
   TUserRequest,
   TUserResponse,
-} from "../../interfaces/user";
+} from "../../interfaces/user.interfaces";
 import { QueryResult } from "pg";
 import { client } from "../../database";
 import { responseUserSchema } from "../../schemas/users.schemas";
+import * as bcrypt from "bcryptjs";
 
 const createUsersService = async (
   payload: TUserRequest
 ): Promise<TUserResponse> => {
+  payload.password = await bcrypt.hash(payload.password, 10);
+
   const queryString: string = format(
     `
     INSERT INTO 

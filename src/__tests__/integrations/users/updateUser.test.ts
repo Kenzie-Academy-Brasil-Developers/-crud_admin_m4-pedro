@@ -3,7 +3,7 @@ import app from "../../../app";
 import { client } from "../../../database";
 import { configureTestDatabase } from "../../configs/configTestsDatabase";
 import { createTokenData, createUsersData } from "../../configs/loadData";
-import { TUser } from "../../../interfaces/user";
+import { TUser } from "../../../interfaces/user.interfaces";
 
 describe("Testando rota de atualização de usuário", () => {
   let tokenAdmin: string;

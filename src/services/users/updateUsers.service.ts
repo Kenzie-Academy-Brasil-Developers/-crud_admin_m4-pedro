@@ -3,7 +3,7 @@ import {
   TUserRequest,
   TUserResponse,
   TUserUpdateRequest,
-} from "../../interfaces/user";
+} from "../../interfaces/user.interfaces";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../../database";
 import { responseUserSchema } from "../../schemas/users.schemas";

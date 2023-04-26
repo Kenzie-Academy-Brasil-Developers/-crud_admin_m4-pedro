@@ -1,4 +1,7 @@
-import { TUserCreate, TUserWrongCreate } from "../../../interfaces/user";
+import {
+  TUserCreate,
+  TUserWrongCreate,
+} from "../../../interfaces/user.interfaces";
 
 const createUserAdmin: TUserCreate = {
   name: "Ugo",

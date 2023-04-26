@@ -4,7 +4,7 @@ import {
   TUserRequest,
   TUserResponse,
   TUserUpdateRequest,
-} from "../interfaces/user";
+} from "../interfaces/user.interfaces";
 import listUsersService from "../services/users/listUsers.service";
 import retrieveUsersServices from "../services/users/retrieveUser.service";
 import updateUsersService from "../services/users/updateUsers.service";

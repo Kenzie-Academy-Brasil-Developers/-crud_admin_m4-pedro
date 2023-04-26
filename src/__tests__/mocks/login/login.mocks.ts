@@ -1,4 +1,4 @@
-import { TUserLogin } from "../../../interfaces/user";
+import { TUserLogin } from "../../../interfaces/user.interfaces";
 
 const userAdminLogin: TUserLogin = {
   email: "ugo@kenzie.com.br",

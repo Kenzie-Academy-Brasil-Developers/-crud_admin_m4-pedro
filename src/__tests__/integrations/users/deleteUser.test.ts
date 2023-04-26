@@ -3,7 +3,7 @@ import app from "../../../app";
 import { client } from "../../../database";
 import { configureTestDatabase } from "../../configs/configTestsDatabase";
 import { createTokenData, createUsersData } from "../../configs/loadData";
-import { TUser } from "../../../interfaces/user";
+import { TUser } from "../../../interfaces/user.interfaces";
 import { QueryResult } from "pg";
 
 describe("Testando rota de deleção de usuário", () => {

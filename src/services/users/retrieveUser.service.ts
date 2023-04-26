@@ -1,4 +1,4 @@
-import { TUser, TUserResponse } from "../../interfaces/user";
+import { TUser, TUserResponse } from "../../interfaces/user.interfaces";
 import { responseUserSchema } from "../../schemas/users.schemas";
 
 const retrieveUsersService = async (user: TUser): Promise<TUserResponse> => {
