@@ -11,6 +11,7 @@ const ensureUserIsAdminMiddleware = async (
   if (!admin) {
     throw new AppError("Insufficient Permission", 403);
   }
+
   return next();
 };
 

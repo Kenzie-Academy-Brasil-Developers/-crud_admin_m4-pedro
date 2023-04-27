@@ -9,7 +9,7 @@ const createSessionController = async (
   const payload: TLoginRequest = req.body;
   const token: TLoginResponse = await createSessionService(payload);
 
-  return resp.status(201).json(token);
+  return resp.status(200).json(token);
 };
 
 export { createSessionController };

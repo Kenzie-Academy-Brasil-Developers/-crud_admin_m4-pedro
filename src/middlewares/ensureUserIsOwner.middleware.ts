@@ -8,9 +8,10 @@ const ensureUserIsOwnerMiddleware = async (
 ): Promise<Response | void> => {
   const { id, admin } = res.locals;
 
-  if (id !== req.params.id && !admin) {
+  if (id !== Number(req.params.id) && !admin) {
     throw new AppError("Insufficient Permission", 403);
   }
+
   return next();
 };
 

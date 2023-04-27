@@ -15,8 +15,9 @@ const updateUsersService = async (
   const id: number = userId;
   const queryString: string = format(
     `
-    UPDATE users
-      SET(%I) = ROW(%L)
+    UPDATE 
+      users
+    SET(%I) = ROW(%L)
     WHERE 
       id = %L
     RETURNING

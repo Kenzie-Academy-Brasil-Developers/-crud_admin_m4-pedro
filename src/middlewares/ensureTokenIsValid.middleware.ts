@@ -23,7 +23,7 @@ const ensureTokenIsValidMiddleware = async (
       if (err) {
         throw new AppError(err.message, 401);
       }
-      res.locals.id = decode.sub;
+      res.locals.id = Number(decode.sub);
       res.locals.admin = decode.admin;
     }
   );

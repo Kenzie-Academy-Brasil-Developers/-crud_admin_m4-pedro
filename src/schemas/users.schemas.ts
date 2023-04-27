@@ -11,11 +11,13 @@ const userSchema = z.object({
 
 const requestUserSchema = userSchema.omit({ id: true, active: true });
 
-const updateUserSchema = userSchema.omit({
-  id: true,
-  admin: true,
-  active: true,
-});
+const updateUserSchema = userSchema
+  .omit({
+    id: true,
+    admin: true,
+    active: true,
+  })
+  .deepPartial();
 
 const responseUserSchema = userSchema.omit({ password: true });
 

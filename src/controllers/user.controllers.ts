@@ -6,10 +6,11 @@ import {
   TUserUpdateRequest,
 } from "../interfaces/user.interfaces";
 import listUsersService from "../services/users/listUsers.service";
-import retrieveUsersServices from "../services/users/retrieveUser.service";
 import updateUsersService from "../services/users/updateUsers.service";
 import deleteUsersService from "../services/users/deleteUsers.service";
-import putUsersRecoverService from "../services/users/putUsers.service";
+import putUsersRecoverService from "../services/users/recoverUsers.service";
+import listUserProfileService from "../services/users/listUserProfile.service";
+import recoverUsersService from "../services/users/recoverUsers.service";
 
 const createUsersController = async (
   req: Request,
@@ -30,13 +31,15 @@ const listUsersController = async (
   return res.json(users);
 };
 
-const retrieveUsersController = async (
+const listUserProfileController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const user = await retrieveUsersServices(res.locals.user);
+  const userId: number = Number(res.locals.id);
 
-  return res.json(user);
+  const payload: TUserResponse = await listUserProfileService(userId);
+
+  return res.status(200).json(payload);
 };
 
 const updateUsersController = async (
@@ -44,37 +47,41 @@ const updateUsersController = async (
   res: Response
 ): Promise<Response> => {
   const userId: number = Number(req.params.id);
-  const userData: TUserUpdateRequest = req.body;
+  const payload: TUserUpdateRequest = req.body;
 
-  const updatedUser = await updateUsersService(userId, userData);
+  const updatedUser = await updateUsersService(userId, payload);
 
   return res.json(updatedUser);
 };
 
-const deleteUsersControler = async (
-  request: Request,
-  response: Response
+const deactivateUserController = async (
+  req: Request,
+  res: Response
 ): Promise<Response> => {
-  const userId: number = Number(request.params.id);
+  const userId: number = parseInt(req.params.id);
+  const userToken: number = res.locals.id;
 
-  await deleteUsersService(userId);
-  return response.status(204).send();
+  const userData = await deleteUsersService(userId, userToken);
+
+  return res.status(204).json(userData);
 };
 
-export const putUsersControler = async (
-  request: Request,
-  response: Response
+const recoverUsersController = async (
+  req: Request,
+  res: Response
 ): Promise<Response> => {
-  const userId: number = Number(request.params.id);
+  const userId: number = Number(req.params.id);
 
-  const newUser = await putUsersRecoverService(userId);
-  return response.json(newUser);
+  const user: TUserResponse = await recoverUsersService(userId);
+
+  return res.status(200).json(user);
 };
 
 export {
   createUsersController,
   listUsersController,
-  retrieveUsersController,
   updateUsersController,
-  deleteUsersControler,
+  listUserProfileController,
+  recoverUsersController,
+  deactivateUserController,
 };

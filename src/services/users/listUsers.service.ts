@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { TUserResponse } from "../../interfaces/user.interfaces";
 import { client } from "../../database";
-import { AppError } from "../../error";
 
 const listUsersService = async (): Promise<Array<TUserResponse>> => {
   const queryString: string = `

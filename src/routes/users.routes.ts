@@ -1,9 +1,10 @@
 import { Request, Response, Router } from "express";
 import {
   createUsersController,
+  deactivateUserController,
+  listUserProfileController,
   listUsersController,
-  putUsersControler,
-  retrieveUsersController,
+  recoverUsersController,
   updateUsersController,
 } from "../controllers/user.controllers";
 import ensureEmailNotExistsMiddleware from "../middlewares/ensureEmailNotExists.middleware";
@@ -11,9 +12,11 @@ import ensureUserExistsMiddleware from "../middlewares/ensureUserExists.middlewa
 import ensureBodyIsValidMiddleware from "../middlewares/ensureBodyIsValid.middleware";
 import { requestUserSchema, updateUserSchema } from "../schemas/users.schemas";
 import ensureTokenIsValidMiddleware from "../middlewares/ensureTokenIsValid.middleware";
-import ensureUserIsAdminMiddleware from "../middlewares/ensureUserIsAdmin.middleware";
+
 import ensureUserIsOwnerMiddleware from "../middlewares/ensureUserIsOwner.middleware";
 import deleteUsersService from "../services/users/deleteUsers.service";
+import ensureUserIsActiveMiddleware from "../middlewares/ensureUserIsActivity.middleware";
+import ensureUserIsAdminMiddleware from "../middlewares/ensureUserIsAdmin.middleware";
 
 const userRoutes: Router = Router();
 
@@ -27,22 +30,20 @@ userRoutes.post(
 userRoutes.get(
   "",
   ensureTokenIsValidMiddleware,
-  ensureUserIsAdminMiddleware,
+  ensureUserIsOwnerMiddleware,
   listUsersController
 );
 
 userRoutes.get(
-  "/:id",
-  ensureUserExistsMiddleware,
+  "/profile",
   ensureTokenIsValidMiddleware,
-  retrieveUsersController
+  listUserProfileController
 );
 
 userRoutes.patch(
   "/:id",
   ensureUserExistsMiddleware,
   ensureTokenIsValidMiddleware,
-  ensureUserIsAdminMiddleware,
   ensureUserIsOwnerMiddleware,
   ensureBodyIsValidMiddleware(updateUserSchema),
   updateUsersController
@@ -50,17 +51,18 @@ userRoutes.patch(
 
 userRoutes.delete(
   "/:id",
-  ensureUserExistsMiddleware,
   ensureTokenIsValidMiddleware,
-  ensureUserIsAdminMiddleware,
-  deleteUsersService
+  ensureUserExistsMiddleware,
+  ensureUserIsOwnerMiddleware,
+  deactivateUserController
 );
 
 userRoutes.put(
   "/:id/recover",
-  ensureUserExistsMiddleware,
   ensureTokenIsValidMiddleware,
-  putUsersControler
+  ensureUserIsAdminMiddleware,
+  ensureUserIsActiveMiddleware,
+  recoverUsersController
 );
 
 export default userRoutes;
