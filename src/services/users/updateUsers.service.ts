@@ -12,6 +12,7 @@ const updateUsersService = async (
   userId: number,
   payload: TUserUpdateRequest
 ): Promise<TUserResponse> => {
+  const id: number = userId;
   const queryString: string = format(
     `
     UPDATE users
@@ -22,16 +23,12 @@ const updateUsersService = async (
       *;
     `,
     Object.keys(payload),
-    Object.values(payload)
+    Object.values(payload),
+    id
   );
 
-  const queryConfig: QueryConfig = {
-    text: queryString,
-    values: [userId],
-  };
-
   const queryResult: QueryResult<TUserResponse> = await client.query(
-    queryConfig
+    queryString
   );
 
   const updatedUser = responseUserSchema.parse(queryResult.rows[0]);

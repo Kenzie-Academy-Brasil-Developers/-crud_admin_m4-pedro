@@ -8,6 +8,8 @@ import {
 import listUsersService from "../services/users/listUsers.service";
 import retrieveUsersServices from "../services/users/retrieveUser.service";
 import updateUsersService from "../services/users/updateUsers.service";
+import deleteUsersService from "../services/users/deleteUsers.service";
+import putUsersRecoverService from "../services/users/putUsers.service";
 
 const createUsersController = async (
   req: Request,
@@ -41,7 +43,7 @@ const updateUsersController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const userId: number = parseInt(req.params.id);
+  const userId: number = Number(req.params.id);
   const userData: TUserUpdateRequest = req.body;
 
   const updatedUser = await updateUsersService(userId, userData);
@@ -49,9 +51,30 @@ const updateUsersController = async (
   return res.json(updatedUser);
 };
 
+const deleteUsersControler = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userId: number = Number(request.params.id);
+
+  await deleteUsersService(userId);
+  return response.status(204).send();
+};
+
+export const putUsersControler = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userId: number = Number(request.params.id);
+
+  const newUser = await putUsersRecoverService(userId);
+  return response.json(newUser);
+};
+
 export {
   createUsersController,
   listUsersController,
   retrieveUsersController,
   updateUsersController,
+  deleteUsersControler,
 };
